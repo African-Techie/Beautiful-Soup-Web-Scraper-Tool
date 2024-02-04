@@ -57,3 +57,62 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+# Update account route
+@auth_bp.route('/update_account', methods=['POST'])
+def update_account():
+    # Get the form data
+    form_data = request.form.to_dict()
+
+    # Check if user exists
+    existing_user = User.query.filter_by(email=form_data.get('email', None)).first()
+
+    # Check if email address has changed
+    if existing_user and existing_user.id != current_user.id:
+        return jsonify({'success': False, 'error': 'Email address already exists'})
+
+    # Update user information
+    for key, value in form_data.items():
+        if key in ('first_name', 'last_name', 'email', 'password'):
+            setattr(current_user, key, value)
+
+    # Commit changes to the database
+    db.session.commit()
+
+    return jsonify({'success': True})
+
+# Delete account
+@auth_bp.route('/delete_account', methods=['POST'])
+@login_required
+def delete_account():
+    email = current_user.email
+
+    # Check if user exists
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'success': False, 'error': 'User not found'})
+
+    # Delete user from the database
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'success': True})
+
+# download csv file
+@auth_bp.route('/download_csv', methods=['POST'])
+def download_csv():
+    csv_data = request.form.get('csv_data')
+
+    # Parse the CSV data
+    csv_rows = [row.split(',') for row in csv_data.strip().split('\n')]
+
+    # Create a CSV file in-memory
+    csv_file = StringIO()
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerows(csv_rows)
+
+    # Create a response with the CSV file
+    response = Response(csv_file.getvalue(), content_type='text/csv')
+    response.headers["Content-Disposition"] = "attachment; filename=scraped_data.csv"
+
+    return response
