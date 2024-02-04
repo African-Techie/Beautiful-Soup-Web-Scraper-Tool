@@ -1,11 +1,12 @@
-from flask import render_template
-from models import ScrapedData
-from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
+from flask import Blueprint, render_template, current_app
 
-from flask import Flask, request
-app = Flask(__name__)
+views_bp = Blueprint('views', __name__)
 
-@app.route('./dashboard')
+@views_bp.route('/')
+def index():
+    return render_template('index.html')
+    
+@views_bp.route('/dashboard')
 @login_required
 def dashboard():
     return render_template('dashboard.html')
@@ -29,24 +30,4 @@ def scrape():
         flash('Unexpected error occurred during scraping. Please try again.')
 
     return render_template('dashboard.html', extracted_data=extracted_data)
-
-
-# User Dashboard
-@app.route('./dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html')
-
-# Home Page
-@app.route('./')
-def index():
-    return render_template('index.html')
-
-
-# Logout
-@app.route('./logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
 
