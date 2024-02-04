@@ -1,0 +1,392 @@
+<html lang="en">
+  <head>
+  	<title>Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.css') }}">
+
+    <style>
+      .dash-sections {
+        box-shadow: 1px 3px 4px #d3d3d3;
+        padding: 10px;
+        margin-bottom: 40px;
+      } 
+      
+      .scraping-errors {
+        background-color: #e3c6c6;
+        padding: 10px 20px;
+        color: #621513;
+        width: 100%;
+        margin: auto auto;
+        text-align: center;
+      }
+      #scrape-history {
+        height: 370px;
+      }
+      .non-scrollable {
+        height: 40px;
+        padding: -20px;
+      }
+      #scrollable {
+        height: 300px;
+        overflow-y: auto;
+      }
+
+      @media (max-width: 767px){
+        .dash-sections-cont {
+          flex-direction: column;
+        }
+        .col8, .col4 {
+          width: 100%
+        }
+      }
+
+      @media (min-width: 767px){
+        .col8 {
+          width: 60%; 
+          margin-right: 40px
+        }
+
+        .col4 {
+          width: 40%;
+        }
+      }
+
+      #back-to-top-btn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+		
+		<div class="wrapper d-flex align-items-stretch my-content">
+			<nav id="sidebar">
+				<div class="p-4 pt-5" style="display: flex; justify-content: space-between; flex-direction: column; height: 100vh; position: fixed">
+
+          <div>
+            <h4 align="left"  style="color: white">{{ current_user.first_name }} {{ current_user.last_name }}</h4>
+            <ul class="list-unstyled components mb-5">
+              <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: white"><i class="fa fa-edit"></i> Account Actions</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu" style="background-color: #f8f9fa; width: 300px; margin-left: -24px">
+                  <li style="margin-left: 40px">
+                      <a href="#" style="color: black" id="editButton" data-toggle="modal" data-target="#editAccountModal"><i class="fa fa-book"></i>  Edit Account</a>
+                  </li>
+                  <li style="margin-left: 40px">
+                    <a href="#" style="color: black" id="deleteButton" data-toggle="modal" data-target="#deleteAccountModal"><i class="fa fa-trash"></i>  Delete Account</a>
+                  </li>
+                
+                </ul>
+              </li>
+        
+              <li>
+                <a href="{{ url_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+
+	        <div class="footer" style="margin-top: auto">
+	        	<p>
+						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> | Orion Collections</a>
+						</p>
+	        </div>
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+
+            <button type="button" id="sidebarCollapse" class="btn" style="background-color: darkslateblue; color:white">
+              <i class="fa fa-bars"></i>
+              <span class="sr-only">Toggle Menu</span>
+            </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="dash-sections-cont" style="display: flex; width: 100%">
+
+          <div class="dash-sections dash-sections-sm col8" >
+            <div class="non-scrollable">
+              <h5>Welcome, {{ current_user.first_name }}!</h5>
+            </div>
+            {% with errors = get_flashed_messages(with_categories=true) %}
+                {% if errors %}
+                    {% for category, error in errors %}
+                        <div class="{{ category }}" role="alert">
+                            {{ error }}
+                            <button type="button" class="close" data-dismiss="alert">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('scrape') }}">
+              <label for="target_url">Target URL:</label><label style="width: 20px"></label>
+              <input type="text" id="target_url" name="target_url" placeholder="E.g. https://www.orioncollections.co.ke/products" style="width: 70%; height: 36px; margin-left: 2px" required>
+              <br><br>
+            
+              <label for="parent_element">Parent Tag:</label>
+              <input id="parent_element" name="parent_element" placeholder="Enter the parent tag" style="width: 70%; height: 36px; margin-left: 25px" required></input>
+              <br><br>
+            
+              <label for="desired_elements">Elements/Tags:</label>
+              <input id="desired_elements" name="desired_elements" placeholder="E.g. div.prices, h1.section-headers" style="width: 70%; height: 36px;" required></input>
+              <br><br>
+            
+              <button type="submit" class="btn" style="background-color: #007bff; color: white;">Scrape</button>
+            </form>
+            
+          </div>
+          <!-- Replace scraped_data with scraped_data -->
+          <div class="dash-sections dash-sections-sm col4" id="scrape-history">
+              <div class="non-scrollable">
+                <h5>Your Scraping History</h5>
+              </div>
+              <div id="scrollable">
+                <ul>
+                  {% for scraped_item in scraped_data %}
+                  <li>
+                    <a href="#" class="scraped-url" data-target="{{ scraped_item.target_url }}" style="color: darkslateblue">{{ scraped_item.target_url }}</a>
+                      ({{ scraped_item.scrape_timestamp }})
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+          </div>
+          
+        
+        </div>
+
+        <div class="dash-sections">
+          {% if extracted_data %}
+              <div class="scraped-data">
+                  <h5>Scraped Data</h5>
+                  <table border="1px solid black" style="padding: 10px">
+                    <thead>
+                      <th>Extracted data</th>
+                    </thead>
+                    <tbody>
+                        {% for key, values in extracted_data.items() %}
+                        {% if values %}
+                            {% for value in values %}
+                            <tr>
+                              <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+              
+              <!-- Download CSV Button -->
+              <form method="post" action="{{ url_for('download_csv') }}" style="margin-top: 20px;">
+                  <input type="hidden" name="csv_data" value="{{ extracted_data }}">
+                  <button type="submit" class="btn btn-primary">Download CSV</button>
+              </form>
+          {% else %}
+              <p>Your scraped data will appear here.</p>
+          {% endif %}
+          
+        </div>
+      </div>
+		</div>
+
+    <div class="modal fade myModal" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editAccountModalLabel">Edit Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editAccountForm">
+              <div class="form-group">
+                <label for="firstname">Firstname:</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter firstname">
+              </div>
+              <div class="form-group">
+                <label for="lastname">Lastname:</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter lastname">
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+              </div>
+              
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="editAccountButton">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete your account?</p>
+            <p>This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger" id="deleteAccountButton">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <button onclick="topFunction()" id="back-to-top-btn" title="Go to top">
+        <i class="fa fa-arrow-up"></i>
+      </button>
+    
+      <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+      <script>
+          $(document).ready(function () {
+              // Attach a click event to the "Delete Account" button
+              $("#deleteAccountButton").click(function () {
+                  // Make an Ajax request to the server
+                  $.ajax({
+                      url: "/delete_account",
+                      method: "POST",
+                      dataType: "json", // Specify the expected response type
+                      success: function (response) {
+                          if (response.success) {
+                              // If successful, show an alert and redirect to the logout page
+                              alert("Account deleted successfully");
+                              window.location = "/";
+                          } else {
+                              // If not successful, show an error alert
+                              alert("Error deleting account: " + response.error);
+                          }
+                      },
+                      error: function (error) {
+                          // If there's an error in the request, show an alert with the error message
+                          alert("Error deleting account: " + error.statusText);
+                      },
+                  });
+              });
+          });
+
+          $(document).ready(function () {
+            $("#editAccountButton").click(function () {
+              var formData = {
+                first_name: $("#firstname").val(),
+                last_name: $("#lastname").val(),
+                email: $("#email").val(),
+                password: $("#password").val(),
+              };
+          
+              // Remove empty fields from formData
+              Object.keys(formData).forEach(key => {
+                if (formData[key] === "") {
+                  delete formData[key];
+                }
+              });
+          
+              $.ajax({
+                url: "/update_account",
+                method: "POST",
+                data: formData,
+                success: function (response) {
+                  if (response.success) {
+                    alert("Account updated successfully");
+                    $(".myModal").modal("hide");
+                  } else {
+                    alert("Error updating account: " + response.error);
+                  }
+                },
+                error: function (error) {
+                  alert("Error updating account: " + error.message);
+                },
+              });
+            });
+          });   
+          
+          
+          $(document).ready(function () {
+              // Attach a click event to the scraped URLs
+              $(".scraped-url").click(function () {
+                  // Get the URL text from the clicked element
+                  var clickedUrl = $(this).text();
+      
+                  // Fill the target URL field with the clicked URL
+                  $("#target_url").val(clickedUrl);
+              });
+          });
+          
+          var mybutton = document.getElementById("back-to-top-btn");
+          window.onscroll = function() {
+            if(document.body.scrollTop > 20){
+
+              mybutton.style.display = "block";
+            } else {
+              mybutton.style.display = "none"
+            }
+          };
+          const topFunction = () => {
+            const scrollDuration = 1800;
+            const scrollStep = -window.scrollY
+
+            const scrollInterval = setInterval(() => {
+              if(window.scrollY !== 0){
+                window.scrollBy(0, scrollStep);
+              } else {
+                clearInterval(scrollInterval);
+              }
+            }, 15);
+          }
+
+      </script>
+  </body>
+</html>

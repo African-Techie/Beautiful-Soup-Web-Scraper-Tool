@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Scrape History</h2>
+  <ul>
+    {% for item in items %}
+      <li>{{ item.target_url }} ({{ item.scrape_timestamp }})</li>
+    {% endfor %}
+  </ul>
+  <div id="pagination" class="pagination">
+    {% if has_prev %}<a href="{{ url_for('url_history', page=prev_num) }}">previous</a>{% endif %}
+    <span>Page {{ page }} of {{ pages }}.</span>
+    {% if has_next %}<a href="{{ url_for('url_history', page=next_num) }}">next</a>{% endif %}
+  </div>
+{% endblock %}

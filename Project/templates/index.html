@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scrapper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.css') }}">
+
+    <style>
+        button {
+            background-color: rgb(35, 35, 40);
+            padding: 20px;
+            border: none;
+            display: flex;
+            justify-content: space-around;
+            font-size: medium;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        button:hover {
+            opacity: 0.8;
+            color: white;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('index') }}" style="margin-top:7px">Home</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}" style="margin-top:7px">Login</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}" style="margin-top:7px"> Sign up</a>
+                </li>
+
+            </ul>
+        </div>
+      </nav>
+    
+    <span class="landing-page">
+
+        <div style="margin-top: 120px" class="landing-section-one">
+            <h1 style="font-family:Verdana, Geneva, Tahoma, sans-serif; color:darkslateblue; ">Welcome to Orion Scraper! <i class="fa fa-laptop"></i></h1>
+            <p>While perfection remains elusive, data is always available!</p> <br>
+            <button class="logout-btn"><a href="{{ url_for('login') }}">Begin Scraping <i class="fa fa-arrow-right"></i></a></button>
+        </div>
+
+        <section id="landing-page-section">
+
+            <article class="phone-displays" id="phone-1">
+                <div class="top-hr-sm-phone"><hr  style="border: solid white"></div>
+                <div class="landing-graphics"><img src="{{ url_for('static', filename='images/62e81ca0304e5174b6fa0d78_coding_for_business.jpg') }}" alt=""></div>
+
+                <p>Instant</p>
+                <div class="hr-group">
+                    <hr style="border: solid darkgray" class="hr1">
+                    <hr style="border: solid darkgray" class="hr2">
+                    <hr style="border: solid darkgray" class="hr3">
+                </div>
+                <hr class="phone-hr">
+            </article>
+
+            <article class="phone-displays" id="phone-2">
+                <div class="status-bar">
+                    <div class="left-sidebar">
+                        <div id="status-bar-time">
+                            6:20
+                        <div id="status-bar-battery"><i class="fa fa-battery-half"></i><div>
+                    </div>
+                    <div class="top-hr"><hr  style="border: solid black"></div>
+                    <div class="right-sidebar">
+                        <div id="status-bar-wifi"><i class="fa fa-wifi"></i><div>
+                        <div id="status-bar-signal"><i class="fa fa-signal"></i><div>
+                    </div>
+                </div>
+                <div class="side-buttons">
+                    <div class="power">
+                        <hr id="power" style="border-left: 1px solid black">
+                    </div>
+                        <div>
+                            <div id="homeTime" style="margin-top: 40px">
+                                <h5 style="text-align:center; font-size: 18px; color: darkslateblue;" >
+                                    Orion Scraper
+                                </h5>
+                            </div>
+                            
+                            <div ><img id="phone-2-img" class="landing-graphics" src="{{ url_for('static', filename='images/codecode.jpg') }}" alt=""></div>
+                           
+                            <p>Real-time</p>
+                            <div class="hr-group">
+                                <hr style="border: solid darkorange" class="hr1">
+                                <hr style="border: solid royalblue" class="hr2">
+                                <hr style="border: solid deeppink" class="hr3">
+                            </div>
+                        </div>
+
+                    <div class="vol-up-down">
+                        <hr id="vol-up" style="border-right: 1px solid black">
+                        <hr id="vol-down" style="border-right: 1px solid black">
+                    </div>
+                </div>
+
+                <hr class="phone-2-hr">
+            </article>
+
+            <article class="phone-displays" id="phone-3">
+                <div class="top-hr-sm-phone"><hr  style="border: solid white"></div>
+                <div class="landing-graphics"><img src="{{ url_for('static', filename='images/gettyimages-1129377183.jpg') }}" alt=""></div>
+               
+                <p>Data Analysis</p>
+                <div class="hr-group">
+                    <hr style="border: solid darkgray" class="hr1">
+                    <hr style="border: solid darkgray" class="hr2">
+                    <hr style="border: solid darkgray" class="hr3">
+                </div>
+                <hr class="phone-hr">
+            </article>
+
+        </section>
+
+        <div class="wave" id="wave"></div>
+    </span>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

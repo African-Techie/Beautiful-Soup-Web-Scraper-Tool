@@ -1,0 +1,305 @@
+.landing-page {
+  display: flex;
+  justify-content: space-around;
+  margin-top: -30px;
+  position: relative;
+  min-height: 500px;
+  background: transparent;
+}
+
+#landing-page-section {
+  display: flex;
+  justify-content: space-around;
+  z-index: 5;
+}
+#landing-page-section a {
+  text-decoration: none;
+  margin-top: 72px;
+}
+.phone-displays {
+  padding: 10px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 5px 4px 10px 1px midnightblue;
+}
+.phone-displays:hover {
+  box-shadow: 5px 4px 10px black;
+  transform: scale(1.12);
+}
+
+#phone-1,
+#phone-3 {
+  width: 110px;
+  height: 210px;
+  margin: 123px 20px auto;
+  z-index: 1;
+}
+#phone-1 {
+  margin-left: 0;
+}
+
+#phone-2 {
+  width: 150px;
+  height: 310px;
+  margin: 0;
+  margin-top: 70px;
+  z-index: 1;
+  border: 1px solid black;
+  border-top: 6px solid black;
+  border-bottom: 10px solid black;
+  border-radius: 20px;
+  box-shadow: inset 3px 0 7px black;
+}
+
+.top-hr-sm-phone {
+  width: 60%;
+  border: none;
+  height: 20px;
+  background-color: white;
+  margin: -32px auto 10px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  box-shadow: inset 0 0 4px 0 midnightblue;
+}
+
+.status-bar {
+  display: flex;
+  margin: auto;
+}
+
+.left-sidebar {
+  display: flex;
+}
+
+.right-sidebar {
+  display: flex;
+  margin-top: 6px;
+}
+
+#status-bar-time {
+  font-size: 8px;
+  margin-top: -6px;
+  color: black;
+  margin-left: 14px;
+}
+
+#status-bar-battery {
+  font-size: 7px;
+  margin-top: -12px;
+  color: black;
+  margin-left: -14px;
+}
+
+#status-bar-signal {
+  font-size: 8px;
+  margin-top: -12px;
+  text-align: right;
+  margin-right: 14px;
+  color: darkslateblue;
+}
+
+#status-bar-wifi {
+  font-size: 8px;
+  margin-top: -11px;
+  text-align: right;
+  margin-right: 8px;
+  color: darkslateblue;
+}
+
+#phone-2 .top-hr {
+  width: 50%;
+  border: none;
+  height: 18px;
+  background-color: black;
+  margin: -40px auto -6px;
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+}
+
+#phone-2 .side-buttons {
+  display: flex;
+}
+
+#power {
+  margin-left: -14px;
+  width: 2px;
+  height: 50px;
+  margin-top: 40px;
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: #d3d3d3;
+}
+
+#vol-down,
+#vol-up {
+  margin-right: -30px;
+  width: 2px;
+  height: 30px;
+  margin-top: 23px;
+  border-left: 1px solid whitesmoke;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background: #d3d3d3;
+}
+#vol-down {
+  margin-top: 10px;
+}
+.landing-graphics img {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 43px auto auto auto;
+}
+#phone-2-img {
+  width: 130px;
+  display: block;
+  margin: 10px -20px auto auto;
+  border: 1px solid white;
+}
+.phone-displays h4 {
+  margin-top: 20px;
+  text-align: center;
+  color: royalblue;
+  font-family: "Futura Bk BT", sans-serif;
+}
+#phone-2 h4 {
+  margin-top: 20px;
+  font-size: 19px;
+  margin-bottom: 0;
+}
+#phone-1 p,
+#phone-3 p {
+  font-size: 13px;
+  margin-top: 0;
+  margin-bottom: 50px;
+  text-align: center;
+  color: black;
+}
+#phone-2 p {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 130px;
+  margin-top: 18px;
+  color: black;
+}
+#phone-2 .hr-group {
+  display: flex;
+  width: 50%;
+  justify-content: space-around;
+  margin: -100px auto 53px;
+}
+.hr-group {
+  display: flex;
+  width: 23%;
+  justify-content: space-around;
+  margin: -18px auto 50px;
+}
+#phone-3 .hr-group {
+  margin-top: -39px;
+}
+.hr-group hr {
+  width: 2%;
+  margin: auto;
+}
+
+.phone-hr {
+  margin-top: -17px;
+  width: 50%;
+  height: 1px;
+  background-color: black;
+  border: none;
+}
+
+.phone-2-hr {
+  margin-top: -29px;
+  width: 50%;
+  height: 1px;
+  background-color: black;
+  border: none;
+}
+
+
+
+@media (max-width: 500px) {
+  #landing-page-section {
+    transform: scale(0.9);
+  }
+
+  .landing-section-one {
+    display:  none;
+  }
+
+  .landing-page {
+    margin-top: 0;
+    margin-bottom: -100px;
+  }
+  
+}
+
+@media (min-width: 1200px) {
+  #landing-page-section {
+    transform: scale(1.3);
+  }
+
+  .landing-page {
+    margin-top: 10px;
+    margin-bottom: 50px;
+  }
+}
+
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 167px;
+  bottom: 0px;
+  left: 0;
+  background: url("../images/wave.png");
+  animation: animate 10s linear infinite;
+  opacity: 0.7;
+  z-index: 0;
+  filter: invert(70%);
+}
+
+.wave:before {
+  content: "";
+  width: 100%;
+  height: 167px;
+  background: url("../images/wave.png");
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.2;
+  animation: animate-reverse 10s linear infinite;
+}
+
+@keyframes animate {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 2276px;
+  }
+}
+
+.wave:after {
+  content: "";
+  width: 100%;
+  height: 167px;
+  background: url("../images/wave.png");
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+  animation-delay: -6s;
+  animation: animate-reverse 15s linear infinite;
+}
+
+@keyframes animate-reverse {
+  0% {
+    background-position: 2276px;
+  }
+  100% {
+    background-position: 0;
+  }
+}

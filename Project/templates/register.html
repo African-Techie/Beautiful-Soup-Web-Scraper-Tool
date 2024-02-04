@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.css') }}">
+</head>
+<body>
+
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST" class="form">
+
+        {% with errors = get_flashed_messages(with_categories=true) %}
+            {% if errors %}
+                {% for category, error in errors %}
+                    <div class="{{ category }}">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h3 align=center>Join Orion Family</h3>
+
+        <div class="entries">
+            <label class="fa fa-user"></label>
+            <input type="text" name="firstname" placeholder="Firstname">
+        </div>
+        </div><br>
+        <div class="entries">
+            <label class="fa fa-user"></label>
+            <input type="text" name="lastname" placeholder="Lastname" >
+        </div><br>
+        <div class="entries">
+            <label class="fa fa-envelope"></label>
+            <input type="email" name="email" placeholder="Email" >
+        </div><br>
+        <div class="entries">
+            <label class="fa fa-key"></label>
+            <input type="password" name="password1" placeholder="Password" autocomplete="new-password">
+        </div><br>
+        <br><br>
+        <div style="display:flex; justify-content: center">
+            <button type="submit" class="btn login-btn">SIGN UP</button>
+        </div>
+        <p style="font-size: 12px; text-align:center">Already having an account? <a href="{{ url_for('login') }}"> Login </a> or go to <a href="{{ url_for('index') }}"> <i class='fa fa-home'></i> </a> instead.</p>
+
+    </form>
+
+</body>
+</html>

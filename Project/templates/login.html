@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.css') }}">
+</head>
+<body class="b-styling">
+
+    <form method="POST" class="form">
+        {% with errors = get_flashed_messages(with_categories=true) %}
+            {% if errors %}
+                {% for category, error in errors %}
+                    <div class="{{ category }}">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+
+        <h3 align='center'>Login to Scrape Data</h3>
+        <div class="entries top-entry"><input type="email" name="email" placeholder="Email" > <label for="username" <i class="fa fa-envelope" required></label></div><br>
+        <div class="entries"> <input type="password" name="password" id="password" placeholder="Password" autocomplete="new-password"> <label for="password" <i class="fa fa-key"></label></div><br>
+        <div class="btn login-btn"> <button type="submit">SIGN IN</button></div></p>
+        <p style="font-size: 12px; text-align:center"><a href="{{ url_for('register') }}"> Join Orion Membership </a> or go to <a href="{{ url_for('index') }}"> <i class='fa fa-home'></i> </a> instead.</p>
+    </form>
+</body>
+</html>
