@@ -1,12 +1,16 @@
-import dbm
-from flask import app, flash, redirect, render_template, url_for, request
-from flask_login import login_user, login_required, logout_user
-from models import User, ScrapedData
-from flask_sqlalchemy import SQLAlchemy
+from flask import Blueprint, flash, redirect, render_template, url_for, request
+from flask_login import login_user, login_required, logout_user, current_user
+from project.models import User
+from project import db, login_manager
 
+auth_bp = Blueprint('auth', __name__)
 
-db = SQLAlchemy()
-@app.route('/register', methods=['GET', 'POST'])
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+#register route
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         first_name = request.form['firstname']
@@ -31,7 +35,8 @@ def register():
         return redirect(url_for('dashboard'))
     return render_template('register.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+#login route
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -46,4 +51,9 @@ def login():
             return redirect(url_for('login'))
     return render_template('login.html')
 
-
+#logout route
+@auth_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
